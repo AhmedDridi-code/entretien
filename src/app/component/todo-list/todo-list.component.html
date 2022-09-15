@@ -1,0 +1,51 @@
+
+<div class="container">
+    
+
+<div class="mb-3 mt-5">
+    <label for="UserId" class="form-label">UserId</label>
+    <input class="form-control" type="text"  name="UserId" placeholder="filter by UserId" [(ngModel)]="userId" >
+</div>
+<div class="mb-3">
+    <label for="Id" class="form-label">Id</label>
+    <input class="form-control" type="text" name="id" placeholder="filter by id" [(ngModel)]="id">
+</div>
+<div class="mb-3">
+    <label for="Id" class="form-label">title</label>
+    <input class="form-control" type="text" name="Title" placeholder="filter by Title" [(ngModel)]="title">
+</div>
+
+<table class="table table-striped mb-5">
+    <thead class="thead-dark">
+
+    
+    <tr>
+      
+      <th>id</th>
+      <th>Title</th>
+      <th>Completed</th>
+      <th>UserId</th>
+    </tr>
+
+</thead>
+
+<tbody>
+    <tr *ngFor="let todo of todos | filter:userId:id:title">
+        <td>{{todo.id}}</td>
+        <td>{{todo.title}}</td>
+        <td>{{todo.completed}}</td>
+        <td>{{todo.userId}}</td>
+        <td (click)="delteTodo(todo.id)"><mat-icon>disabled_by_default</mat-icon></td>
+      </tr>
+</tbody>
+
+
+  </table>
+</div>
+  <mat-paginator [length]="todos.length"
+               [pageSize]="pageSize"
+               [pageIndex]="pageIndex"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="getServerData($event)"
+               aria-label="Select page">
+</mat-paginator>
