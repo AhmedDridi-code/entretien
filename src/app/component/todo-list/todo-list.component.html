@@ -30,7 +30,7 @@
 </thead>
 
 <tbody>
-    <tr *ngFor="let todo of todos | filter:userId:id:title">
+    <tr *ngFor="let todo of slicedTodos | filter:userId:id:title">
         <td>{{todo.id}}</td>
         <td>{{todo.title}}</td>
         <td>{{todo.completed}}</td>
@@ -43,9 +43,9 @@
   </table>
 </div>
   <mat-paginator [length]="todos.length"
+               [pageSizeOptions]="pageSizeOptions"
                [pageSize]="pageSize"
                [pageIndex]="pageIndex"
-               [pageSizeOptions]="pageSizeOptions"
                (page)="getServerData($event)"
                aria-label="Select page">
 </mat-paginator>

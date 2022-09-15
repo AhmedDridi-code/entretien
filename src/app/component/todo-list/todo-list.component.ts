@@ -12,13 +12,14 @@ export class TodoListComponent implements OnInit {
 
   constructor(private todoService: TodoServiceService) { }
   todos:Todo[] = []
-  length:number=0
+  length?:number;
   id:string=""
   userId:string=""
   title:string=""
   pageEvent?: PageEvent;
   pageSize = 10;
   pageIndex = 0;
+  slicedTodos : Todo[]=[]
   pageSizeOptions = [5, 10, 25, 100];
   ngOnInit(): void {
     this.getServerData()
@@ -26,23 +27,27 @@ export class TodoListComponent implements OnInit {
 
   delteTodo(id: number){
     this.todoService.deleteTodo(id).subscribe(todo => {
-      this.todos = this.todos.filter(todo => todo.id !== id)
+      this.slicedTodos = this.slicedTodos.filter(todo => todo.id !== id)
     })
   }
 
   getServerData(event?:PageEvent){
-    console.log()
-    console.log(event?.pageIndex)
-    console.log(event?.pageSize)
-    console.log(event?.length)
+    console.log("page index: "+event?.pageIndex)
+    console.log("page size: "+event?.pageSize)
+    console.log("length event: "+event?.length)
 
     this.pageSize = event?.pageSize || this.pageSize
     this.pageIndex = event?.pageIndex || this.pageIndex;
+    let startIndex = this.pageIndex * this.pageSize;
+    let endIndex = this.pageIndex * this.pageSize + this.pageSize;
     
     this.todoService.listeTodos().subscribe(todos => {
-      length=todos.length;
-      console.log(length)
-      this.todos = todos.slice(this.pageIndex*this.pageSize,this.pageIndex*this.pageSize+this.pageSize)
+      if(endIndex>todos.length){
+        endIndex = todos.length;
+      }
+      this.todos=todos;
+      this.slicedTodos = this.todos.slice(startIndex,endIndex)
+      console.log("length: "+this.todos.length)
     })
   }
 
